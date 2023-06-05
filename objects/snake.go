@@ -10,7 +10,15 @@ const (
 )
 
 type Snake struct {
-	body      []Point
-	direction Direction
-	length    int
+	Body      []Point
+	Direction Direction
+	Length    int
+}
+
+func NewSnake() *Snake {
+	return &Snake{
+		Body:      []Point{{100, 300}},
+		Direction: Right,
+		Length:    1,
+	}
 }
