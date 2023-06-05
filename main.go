@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"github.com/hajimehoshi/ebiten"
+	"log"
+	"snake/game"
+)
 
 func main() {
-	fmt.Println("hee hee")
+	ebiten.SetWindowSize(800, 600)
+	ebiten.SetWindowTitle("Snake")
+	if err := ebiten.RunGame(game.NewGame()); err != nil {
+		log.Fatal(err)
+	}
 }
