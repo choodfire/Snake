@@ -1,6 +1,9 @@
 package objects
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Direction int
 
@@ -30,15 +33,15 @@ func (s *Snake) Move() {
 	yMove := 0
 	if s.Direction == Up {
 		xMove = 0
-		yMove = -1
+		yMove = -10
 	} else if s.Direction == Down {
 		xMove = 0
-		yMove = 1
+		yMove = 10
 	} else if s.Direction == Left {
-		xMove = -1
+		xMove = -10
 		yMove = 0
 	} else if s.Direction == Right {
-		xMove = 1
+		xMove = 10
 		yMove = 0
 	}
 
@@ -46,6 +49,18 @@ func (s *Snake) Move() {
 		s.Body[i].X += xMove
 		s.Body[i].Y += yMove
 	}
+}
 
-	fmt.Println(s.Body)
+func (s *Snake) ConsumeFood() {
+	fmt.Println("i AtE fOoD")
+}
+
+func (s *Snake) CheckBorders() error {
+	head := s.Body[0]
+
+	if head.X > 800 || head.X < 0 || head.Y > 600 || head.Y < 0 {
+		return errors.New("snake hit border")
+	}
+
+	return nil
 }

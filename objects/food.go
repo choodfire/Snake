@@ -1,6 +1,8 @@
 package objects
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 type Food struct {
 	Point Point
@@ -9,8 +11,8 @@ type Food struct {
 func NewFood() *Food {
 	return &Food{
 		Point: Point{
-			X: rand.Intn(800),
-			Y: rand.Intn(600),
+			X: rand.Intn(800/10) * 10, // temp
+			Y: rand.Intn(600/10) * 10,
 		},
 	}
 }
