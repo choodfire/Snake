@@ -11,8 +11,8 @@ type Food struct {
 func NewFood() *Food {
 	return &Food{
 		Point: Point{
-			X: rand.Intn(800/10) * 10, // temp
-			Y: rand.Intn(600/10) * 10,
+			X: rand.Intn(SCREEN_WIDTH/10) * 10,
+			Y: rand.Intn(SCREEN_HEIGHT/10) * 10,
 		},
 	}
 }

@@ -1,7 +1,6 @@
 package objects
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -21,8 +20,11 @@ type Snake struct {
 }
 
 func NewSnake() *Snake {
+	newBody := make([]Point, 0, 10)
+	newBody = append(newBody, Point{SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2})
+
 	return &Snake{
-		Body:      []Point{{100, 300}},
+		Body:      newBody,
 		Direction: Right,
 		Length:    1,
 	}
@@ -53,14 +55,4 @@ func (s *Snake) Move() {
 
 func (s *Snake) ConsumeFood() {
 	fmt.Println("i AtE fOoD")
-}
-
-func (s *Snake) CheckBorders() error {
-	head := s.Body[0]
-
-	if head.X > 800 || head.X < 0 || head.Y > 600 || head.Y < 0 {
-		return errors.New("snake hit border")
-	}
-
-	return nil
 }

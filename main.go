@@ -4,10 +4,11 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"log"
 	"snake/game"
+	"snake/objects"
 )
 
 func main() {
-	ebiten.SetWindowSize(game.SCREEN_WIDTH, game.SCREEN_HEIGHT)
+	ebiten.SetWindowSize(objects.SCREEN_WIDTH, objects.SCREEN_HEIGHT)
 	ebiten.SetWindowTitle("Snake")
 	if err := ebiten.RunGame(game.NewGame()); err != nil {
 		log.Fatal(err)
