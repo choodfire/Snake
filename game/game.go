@@ -29,13 +29,11 @@ func NewGame() *Game {
 }
 
 func (g *Game) Update(screen *ebiten.Image) error {
-	if g.speed < g.maxSpeed { // rethink (cause rn lower speed - faster game)
+	if g.speed < g.maxSpeed {
 		g.speed += 1
 		return nil
 	}
 	g.speed = 0
-	// mb make max_speed (update counter) = 20 (for example) and default speed in game = 5 (in start), then if we increase speed, it
-	// takes less time to think and game becomes faster
 
 	if g.running == false {
 		fmt.Println("Game over!")

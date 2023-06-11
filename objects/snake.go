@@ -45,7 +45,7 @@ func (s *Snake) Move() {
 
 	prevHead := s.Body[0]
 
-	for i := 1; i < len(s.Body); i++ {
+	for i := len(s.Body) - 1; i > 0; i-- {
 		s.Body[i].X, s.Body[i].Y = s.Body[i-1].X, s.Body[i-1].Y
 	}
 
