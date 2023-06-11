@@ -1,9 +1,5 @@
 package objects
 
-import (
-	"fmt"
-)
-
 type Direction int
 
 const (
@@ -35,24 +31,43 @@ func (s *Snake) Move() {
 	yMove := 0
 	if s.Direction == Up {
 		xMove = 0
-		yMove = -10
+		yMove = -SQUARE_SIZE
 	} else if s.Direction == Down {
 		xMove = 0
-		yMove = 10
+		yMove = SQUARE_SIZE
 	} else if s.Direction == Left {
-		xMove = -10
+		xMove = -SQUARE_SIZE
 		yMove = 0
 	} else if s.Direction == Right {
-		xMove = 10
+		xMove = SQUARE_SIZE
 		yMove = 0
 	}
 
-	for i := 0; i < len(s.Body); i++ {
-		s.Body[i].X += xMove
-		s.Body[i].Y += yMove
+	prevHead := s.Body[0]
+
+	for i := 1; i < len(s.Body); i++ {
+		s.Body[i].X, s.Body[i].Y = s.Body[i-1].X, s.Body[i-1].Y
 	}
+
+	s.Body[0].X, s.Body[0].Y = prevHead.X+xMove, prevHead.Y+yMove
 }
 
 func (s *Snake) ConsumeFood() {
-	fmt.Println("i AtE fOoD")
+	newHead := s.Body[0]
+
+	if s.Direction == Up {
+		newHead.X += 0
+		newHead.Y += -SQUARE_SIZE
+	} else if s.Direction == Down {
+		newHead.X += 0
+		newHead.Y += SQUARE_SIZE
+	} else if s.Direction == Left {
+		newHead.X += -SQUARE_SIZE
+		newHead.Y += 0
+	} else if s.Direction == Right {
+		newHead.X += SQUARE_SIZE
+		newHead.Y += 0
+	}
+
+	s.Body = append([]Point{newHead}, s.Body...)
 }

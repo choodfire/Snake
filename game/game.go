@@ -11,29 +11,29 @@ import (
 )
 
 type Game struct {
-	food          *objects.Food
-	snake         *objects.Snake
-	running       bool
-	speed         int
-	updateCounter int
+	food     *objects.Food
+	snake    *objects.Snake
+	running  bool
+	speed    int
+	maxSpeed int
 }
 
 func NewGame() *Game {
 	return &Game{
-		food:          objects.NewFood(),
-		snake:         objects.NewSnake(),
-		running:       true,
-		speed:         10,
-		updateCounter: 0,
+		food:     objects.NewFood(),
+		snake:    objects.NewSnake(),
+		running:  true,
+		speed:    0,
+		maxSpeed: 10,
 	}
 }
 
 func (g *Game) Update(screen *ebiten.Image) error {
-	if g.updateCounter < g.speed { // rethink (cause rn lower speed - faster game)
-		g.updateCounter += 1
+	if g.speed < g.maxSpeed { // rethink (cause rn lower speed - faster game)
+		g.speed += 1
 		return nil
 	}
-	g.updateCounter = 0
+	g.speed = 0
 	// mb make max_speed (update counter) = 20 (for example) and default speed in game = 5 (in start), then if we increase speed, it
 	// takes less time to think and game becomes faster
 
