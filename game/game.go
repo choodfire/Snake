@@ -75,7 +75,7 @@ func (g *Game) Update(screen *ebiten.Image) error {
 
 	if head := g.snake.Body[0]; head == g.food.Point {
 		g.snake.ConsumeFood()
-		g.food = objects.NewFood()
+		g.SpawnNewFood()
 	}
 
 	return nil
@@ -165,4 +165,15 @@ func (g *Game) GamePausedScreen(screen *ebiten.Image) {
 	x, y := cx-bounds.Min.X-bounds.Dx()/2, cy-bounds.Min.Y-bounds.Dy()/2
 
 	text.Draw(screen, restartText, face, x, y, objects.WHITE)
+}
+
+func (g *Game) SpawnNewFood() {
+	g.food = objects.NewFood()
+
+	for _, bodyPoint := range g.snake.Body {
+		if g.food.Point == bodyPoint {
+			g.SpawnNewFood()
+			break
+		}
+	}
 }
