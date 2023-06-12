@@ -26,7 +26,7 @@ func NewGame() *Game {
 		food:      objects.NewFood(),
 		snake:     objects.NewSnake(),
 		isRunning: true,
-		isPaused:  true,
+		isPaused:  false,
 		speed:     0,
 		maxSpeed:  10,
 	}
@@ -36,6 +36,13 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	if g.isRunning == false {
 		if inpututil.IsKeyJustPressed(ebiten.KeyR) {
 			g.Restart()
+		}
+		return nil
+	}
+
+	if g.isPaused == true {
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			g.isPaused = false
 		}
 		return nil
 	}
@@ -56,6 +63,8 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		g.snake.Direction = objects.Down
 	} else if (ebiten.IsKeyPressed(ebiten.KeyD) || ebiten.IsKeyPressed(ebiten.KeyRight)) && g.snake.Direction != objects.Left {
 		g.snake.Direction = objects.Right
+	} else if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+		g.isPaused = true
 	}
 
 	head := g.snake.Body[0]
@@ -78,6 +87,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	if g.isRunning == false {
 		face := basicfont.Face7x13
 		restartText := "Game over. Press \"R\" to restart."
+		bounds := text.BoundString(face, restartText)
+		cx := objects.SCREEN_WIDTH / 2
+		cy := objects.SCREEN_HEIGHT / 2
+		x, y := cx-bounds.Min.X-bounds.Dx()/2, cy-bounds.Min.Y-bounds.Dy()/2
+
+		text.Draw(screen, restartText, face, x, y, objects.RED)
+	}
+
+	if g.isPaused == true {
+		face := basicfont.Face7x13
+		restartText := "Game paused. Press \"Esc\" to continue."
 		bounds := text.BoundString(face, restartText)
 		cx := objects.SCREEN_WIDTH / 2
 		cy := objects.SCREEN_HEIGHT / 2
