@@ -140,7 +140,7 @@ func (g *Game) Restart() {
 	g.food = objects.NewFood()
 	g.snake = objects.NewSnake()
 	g.isRunning = true
-	g.isPaused = true
+	g.isPaused = false
 	g.speed = 0
 	g.maxSpeed = 10
 }
