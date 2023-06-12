@@ -2,6 +2,7 @@ package game
 
 import (
 	"errors"
+	"fmt"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/inpututil"
@@ -85,14 +86,19 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{R: 0, G: 0, B: 0, A: 255})
 
 	if g.isRunning == false {
-		face := basicfont.Face7x13
-		restartText := "Game over. Press \"R\" to restart."
-		bounds := text.BoundString(face, restartText)
 		cx := objects.SCREEN_WIDTH / 2
 		cy := objects.SCREEN_HEIGHT / 2
-		x, y := cx-bounds.Min.X-bounds.Dx()/2, cy-bounds.Min.Y-bounds.Dy()/2
+		face := basicfont.Face7x13
 
-		text.Draw(screen, restartText, face, x, y, objects.RED)
+		scoreText := fmt.Sprintf("Your score: %d.", len(g.snake.Body))
+		scoreBounds := text.BoundString(face, scoreText)
+		scoreTextX, scoreTextY := cx-scoreBounds.Min.X-scoreBounds.Dx()/2, cy-scoreBounds.Min.Y-scoreBounds.Dy()/2
+		text.Draw(screen, scoreText, face, scoreTextX, scoreTextY-10, objects.RED)
+
+		restartText := "Game over. Press \"R\" to restart."
+		restartBounds := text.BoundString(face, restartText)
+		restartTextX, restartTextY := cx-restartBounds.Min.X-restartBounds.Dx()/2, cy-restartBounds.Min.Y-restartBounds.Dy()/2
+		text.Draw(screen, restartText, face, restartTextX, restartTextY+10, objects.RED)
 	}
 
 	if g.isPaused == true {
