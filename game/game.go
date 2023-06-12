@@ -2,7 +2,6 @@ package game
 
 import (
 	"errors"
-	"fmt"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/inpututil"
@@ -101,11 +100,10 @@ func (g *Game) Layout(outsideWidth int, outsideHeight int) (screenWidth int, scr
 func (g *Game) CheckGameOver() error {
 	head := g.snake.Body[0]
 
-	fmt.Println(head)
 	if head.X > objects.SCREEN_WIDTH-objects.SQUARE_SIZE ||
-		head.X < objects.SQUARE_SIZE ||
+		head.X < 0 ||
 		head.Y > objects.SCREEN_HEIGHT-objects.SQUARE_SIZE ||
-		head.Y < objects.SQUARE_SIZE {
+		head.Y < 0 {
 		return errors.New("snake hit border")
 	}
 
