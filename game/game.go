@@ -54,8 +54,6 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	}
 	g.speed = 0
 
-	g.snake.Move()
-
 	if (ebiten.IsKeyPressed(ebiten.KeyW) || ebiten.IsKeyPressed(ebiten.KeyUp)) && g.snake.Direction != objects.Down { // maybe method
 		g.snake.Direction = objects.Up
 	} else if (ebiten.IsKeyPressed(ebiten.KeyA) || ebiten.IsKeyPressed(ebiten.KeyLeft)) && g.snake.Direction != objects.Right {
@@ -68,15 +66,18 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		g.isPaused = true
 	}
 
+	if g.CheckGameOver() != nil {
+		g.isRunning = false
+		return nil
+	}
+
+	g.snake.Move()
+
 	head := g.snake.Body[0]
 
 	if head == g.food.Point {
 		g.snake.ConsumeFood()
 		g.food = objects.NewFood()
-	}
-
-	if g.CheckGameOver() != nil {
-		g.isRunning = false
 	}
 
 	return nil
@@ -126,10 +127,10 @@ func (g *Game) Layout(outsideWidth int, outsideHeight int) (screenWidth int, scr
 func (g *Game) CheckGameOver() error {
 	head := g.snake.Body[0]
 
-	if head.X > objects.SCREEN_WIDTH-objects.SQUARE_SIZE ||
-		head.X < 0 ||
-		head.Y > objects.SCREEN_HEIGHT-objects.SQUARE_SIZE ||
-		head.Y < 0 {
+	if head.X > objects.SCREEN_WIDTH-objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Right ||
+		head.X < objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Left ||
+		head.Y > objects.SCREEN_HEIGHT-objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Down ||
+		head.Y < objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Up {
 		return errors.New("snake hit border")
 	}
 
