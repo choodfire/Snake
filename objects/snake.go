@@ -13,6 +13,7 @@ type Snake struct {
 	Body      []Point
 	Direction Direction
 	Length    int
+	Speed     int
 }
 
 func NewSnake() *Snake {
@@ -23,6 +24,7 @@ func NewSnake() *Snake {
 		Body:      newBody,
 		Direction: Right,
 		Length:    1,
+		Speed:     0,
 	}
 }
 
@@ -70,4 +72,5 @@ func (s *Snake) ConsumeFood() {
 	}
 
 	s.Body = append([]Point{newHead}, s.Body...)
+	s.Length += 1
 }

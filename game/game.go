@@ -14,22 +14,22 @@ import (
 )
 
 type Game struct {
-	food      *objects.Food
-	snake     *objects.Snake
-	isRunning bool
-	isPaused  bool
-	speed     int
-	maxSpeed  int
+	food          *objects.Food
+	snake         *objects.Snake
+	isRunning     bool
+	isPaused      bool
+	maxSnakeSpeed int
+	currentSpeed  int
 }
 
 func NewGame() *Game {
 	return &Game{
-		food:      objects.NewFood(),
-		snake:     objects.NewSnake(),
-		isRunning: true,
-		isPaused:  false,
-		speed:     0,
-		maxSpeed:  10,
+		food:          objects.NewFood(),
+		snake:         objects.NewSnake(),
+		isRunning:     true,
+		isPaused:      false,
+		maxSnakeSpeed: 10,
+		currentSpeed:  0,
 	}
 }
 
@@ -48,11 +48,11 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		return nil
 	}
 
-	if g.speed < g.maxSpeed {
-		g.speed += 1
+	if g.currentSpeed < g.maxSnakeSpeed {
+		g.currentSpeed += 1
 		return nil
 	}
-	g.speed = 0
+	g.currentSpeed = g.snake.Speed
 
 	if (ebiten.IsKeyPressed(ebiten.KeyW) || ebiten.IsKeyPressed(ebiten.KeyUp)) && g.snake.Direction != objects.Down { // maybe method
 		g.snake.Direction = objects.Up
@@ -76,6 +76,8 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	if head := g.snake.Body[0]; head == g.food.Point {
 		g.snake.ConsumeFood()
 		g.SpawnNewFood()
+
+		g.SpeedUpSnake()
 	}
 
 	return nil
@@ -136,8 +138,8 @@ func (g *Game) Restart() {
 	g.snake = objects.NewSnake()
 	g.isRunning = true
 	g.isPaused = false
-	g.speed = 0
-	g.maxSpeed = 10
+	g.maxSnakeSpeed = 10
+	g.currentSpeed = 0
 }
 
 func (g *Game) GameOverScreen(screen *ebiten.Image) {
@@ -175,5 +177,12 @@ func (g *Game) SpawnNewFood() {
 			g.SpawnNewFood()
 			break
 		}
+	}
+}
+
+func (g *Game) SpeedUpSnake() {
+	if g.snake.Length%4 == 0 && g.snake.Speed < g.maxSnakeSpeed {
+		g.snake.Speed += 1
+		g.currentSpeed += 1
 	}
 }
