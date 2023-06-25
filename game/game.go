@@ -48,12 +48,6 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		return nil
 	}
 
-	if g.currentSpeed < g.maxSnakeSpeed {
-		g.currentSpeed += 1
-		return nil
-	}
-	g.currentSpeed = g.snake.Speed
-
 	if (ebiten.IsKeyPressed(ebiten.KeyW) || ebiten.IsKeyPressed(ebiten.KeyUp)) && g.snake.Direction != objects.Down { // maybe method
 		g.snake.Direction = objects.Up
 	} else if (ebiten.IsKeyPressed(ebiten.KeyA) || ebiten.IsKeyPressed(ebiten.KeyLeft)) && g.snake.Direction != objects.Right {
@@ -65,6 +59,12 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	} else if ebiten.IsKeyPressed(ebiten.KeyEscape) {
 		g.isPaused = true
 	}
+
+	if g.currentSpeed < g.maxSnakeSpeed {
+		g.currentSpeed += 1
+		return nil
+	}
+	g.currentSpeed = g.snake.Speed
 
 	if g.CheckGameOver() != nil {
 		g.isRunning = false
