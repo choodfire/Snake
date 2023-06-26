@@ -94,6 +94,16 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		g.GamePausedScreen(screen)
 	}
 
+	for i := objects.LEFT_BORDER; i < objects.RIGHT_BORDER; i++ {
+		ebitenutil.DrawRect(screen, float64(i), float64(objects.UPPER_BORDER), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
+		ebitenutil.DrawRect(screen, float64(i), float64(objects.BOTTOM_BORDER), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
+	}
+
+	for i := objects.UPPER_BORDER; i < objects.BOTTOM_BORDER; i++ {
+		ebitenutil.DrawRect(screen, float64(objects.LEFT_BORDER), float64(i), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
+		ebitenutil.DrawRect(screen, float64(objects.RIGHT_BORDER), float64(i), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
+	}
+
 	ebitenutil.DrawRect(screen, float64(g.food.Point.X), float64(g.food.Point.Y), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.RED)
 
 	for _, point := range g.snake.Body {
@@ -108,19 +118,19 @@ func (g *Game) Layout(outsideWidth int, outsideHeight int) (screenWidth int, scr
 func (g *Game) CheckGameOver() error {
 	head := g.snake.Body[0]
 
-	if head.X > objects.SCREEN_WIDTH-objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Right {
+	if head.X > objects.RIGHT_BORDER-objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Right {
 		return errors.New("snake hit right border")
 	}
 
-	if head.X < objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Left {
+	if head.X < objects.LEFT_BORDER+objects.SQUARE_SIZE+1 && g.snake.Direction == objects.Left {
 		return errors.New("snake hit left border")
 	}
 
-	if head.Y > objects.SCREEN_HEIGHT-objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Down {
+	if head.Y > objects.BOTTOM_BORDER-objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Down {
 		return errors.New("snake hit bottom border")
 	}
 
-	if head.Y < objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Up {
+	if head.Y < objects.UPPER_BORDER+objects.SQUARE_SIZE+1 && g.snake.Direction == objects.Up {
 		return errors.New("snake hit upper border")
 	}
 
