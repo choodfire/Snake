@@ -20,6 +20,8 @@ type Game struct {
 	isPaused      bool
 	maxSnakeSpeed int
 	currentSpeed  int
+	currentScore  int
+	maxScore      int
 }
 
 func NewGame() *Game {
@@ -30,6 +32,8 @@ func NewGame() *Game {
 		isPaused:      false,
 		maxSnakeSpeed: 10,
 		currentSpeed:  0,
+		currentScore:  0,
+		maxScore:      0,
 	}
 }
 
@@ -76,6 +80,10 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	if head := g.snake.Body[0]; head == g.food.Point {
 		g.snake.ConsumeFood()
 		g.SpawnNewFood()
+		g.currentScore += 1
+		if g.currentScore > g.maxScore {
+			g.maxScore += 1
+		}
 
 		g.SpeedUpSnake()
 	}
@@ -93,6 +101,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	if g.isPaused == true {
 		g.GamePausedScreen(screen)
 	}
+
+	g.DrawScoreText(screen)
 
 	for i := objects.LEFT_BORDER; i < objects.RIGHT_BORDER; i++ {
 		ebitenutil.DrawRect(screen, float64(i), float64(objects.UPPER_BORDER), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
@@ -150,6 +160,7 @@ func (g *Game) Restart() {
 	g.isPaused = false
 	g.maxSnakeSpeed = 10
 	g.currentSpeed = 0
+	g.currentScore = 0
 }
 
 func (g *Game) GameOverScreen(screen *ebiten.Image) {
@@ -157,7 +168,7 @@ func (g *Game) GameOverScreen(screen *ebiten.Image) {
 	cy := objects.SCREEN_HEIGHT / 2
 	face := basicfont.Face7x13
 
-	scoreText := fmt.Sprintf("Your score: %d.", len(g.snake.Body))
+	scoreText := fmt.Sprintf("Your score: %d.", g.currentScore)
 	scoreBounds := text.BoundString(face, scoreText)
 	scoreTextX, scoreTextY := cx-scoreBounds.Min.X-scoreBounds.Dx()/2, cy-scoreBounds.Min.Y-scoreBounds.Dy()/2
 	text.Draw(screen, scoreText, face, scoreTextX, scoreTextY-10, objects.WHITE)
@@ -191,8 +202,27 @@ func (g *Game) SpawnNewFood() {
 }
 
 func (g *Game) SpeedUpSnake() {
-	if g.snake.Length%4 == 0 && g.snake.Speed < g.maxSnakeSpeed {
+	if g.currentScore%4 == 0 && g.snake.Speed < g.maxSnakeSpeed {
 		g.snake.Speed += 1
 		g.currentSpeed += 1
 	}
+}
+
+func (g *Game) DrawScoreText(screen *ebiten.Image) {
+	face := basicfont.Face7x13
+	currentScoreText := fmt.Sprintf("Current score: %d", g.currentScore)
+	bounds := text.BoundString(face, currentScoreText)
+	cx := objects.SCREEN_WIDTH / 4
+	cy := objects.UPPER_BORDER / 2
+	x, y := cx-bounds.Min.X-bounds.Dx()/2, cy-bounds.Min.Y-bounds.Dy()/2
+
+	text.Draw(screen, currentScoreText, face, x, y, objects.WHITE)
+
+	bestScoreText := fmt.Sprintf("Best score: %d", g.maxScore)
+	bounds = text.BoundString(face, currentScoreText)
+	cx = objects.SCREEN_WIDTH / 4 * 3
+	cy = objects.UPPER_BORDER / 2
+	x, y = cx-bounds.Min.X-bounds.Dx()/2, cy-bounds.Min.Y-bounds.Dy()/2
+
+	text.Draw(screen, bestScoreText, face, x, y, objects.WHITE)
 }
