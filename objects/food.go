@@ -9,10 +9,13 @@ type Food struct {
 }
 
 func NewFood() *Food {
+	min := (LEFT_BORDER + SQUARE_SIZE) / SQUARE_SIZE
+	max := (UPPER_BORDER + SQUARE_SIZE) / SQUARE_SIZE
+
 	return &Food{
 		Point: Point{
-			X: (rand.Intn(76-5) + 5) * 10,
-			Y: (rand.Intn(56-17) + 17) * 10,
+			X: (rand.Intn((RIGHT_BORDER/SQUARE_SIZE)-min) + min) * SQUARE_SIZE,
+			Y: (rand.Intn((BOTTOM_BORDER/SQUARE_SIZE)-max) + max) * SQUARE_SIZE,
 		},
 	}
 }

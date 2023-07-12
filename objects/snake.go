@@ -16,9 +16,8 @@ type Snake struct {
 }
 
 func NewSnake() *Snake {
-	newBody := make([]Point, 0, 10)
-	newBody = append(newBody, Point{LEFT_BORDER + ((RIGHT_BORDER - LEFT_BORDER) / 4),
-		UPPER_BORDER + ((BOTTOM_BORDER - UPPER_BORDER) / 2)})
+	newBody := make([]Point, 0)
+	newBody = append(newBody, Point{200, 360})
 
 	return &Snake{
 		Body:      newBody,
