@@ -3,10 +3,10 @@ package game
 import (
 	"errors"
 	"fmt"
-	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
-	"github.com/hajimehoshi/ebiten/inpututil"
-	"github.com/hajimehoshi/ebiten/text"
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/text"
 	"golang.org/x/image/font/basicfont"
 	"image/color"
 	_ "image/png"
@@ -37,7 +37,7 @@ func NewGame() *Game {
 	}
 }
 
-func (g *Game) Update(screen *ebiten.Image) error {
+func (g *Game) Update() error {
 	if g.isRunning == false {
 		if inpututil.IsKeyJustPressed(ebiten.KeyR) {
 			g.Restart()
@@ -108,7 +108,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		ebitenutil.DrawRect(screen, float64(i), float64(objects.UPPER_BORDER), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
 		ebitenutil.DrawRect(screen, float64(i), float64(objects.BOTTOM_BORDER), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
 	}
-
 	for i := objects.UPPER_BORDER; i < objects.BOTTOM_BORDER; i++ {
 		ebitenutil.DrawRect(screen, float64(objects.LEFT_BORDER), float64(i), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
 		ebitenutil.DrawRect(screen, float64(objects.RIGHT_BORDER), float64(i), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
