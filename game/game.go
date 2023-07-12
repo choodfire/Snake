@@ -8,8 +8,8 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	"golang.org/x/image/font/basicfont"
-	"image/color"
 	_ "image/png"
+	"log"
 	"snake/objects"
 )
 
@@ -22,9 +22,15 @@ type Game struct {
 	currentSpeed  int
 	currentScore  int
 	maxScore      int
+	background    *ebiten.Image
 }
 
 func NewGame() *Game {
+	img, _, err := ebitenutil.NewImageFromFile("assets/images/background.png")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	return &Game{
 		food:          objects.NewFood(),
 		snake:         objects.NewSnake(),
@@ -34,6 +40,7 @@ func NewGame() *Game {
 		currentSpeed:  0,
 		currentScore:  0,
 		maxScore:      0,
+		background:    img,
 	}
 }
 
@@ -92,7 +99,7 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	screen.Fill(color.RGBA{R: 0, G: 0, B: 0, A: 255})
+	screen.DrawImage(g.background, nil)
 
 	if g.isRunning == false {
 		g.GameOverScreen(screen)
