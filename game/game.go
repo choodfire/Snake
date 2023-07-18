@@ -52,8 +52,9 @@ func (g *Game) Update() error {
 		return nil
 	}
 
+	// todo: fix pause text
 	if g.isPaused == true {
-		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 			g.isPaused = false
 		}
 		return nil
@@ -187,7 +188,7 @@ func (g *Game) GameOverScreen(screen *ebiten.Image) {
 
 func (g *Game) GamePausedScreen(screen *ebiten.Image) {
 	face := basicfont.Face7x13
-	restartText := "Game paused. Press \"Esc\" to continue."
+	restartText := "Game paused. Press \"Enter\" to continue."
 	bounds := text.BoundString(face, restartText)
 	cx := objects.SCREEN_WIDTH / 2
 	cy := objects.SCREEN_HEIGHT / 2
