@@ -1,6 +1,8 @@
 package objects
 
-import "image/color"
+import (
+	"golang.org/x/image/colornames"
+)
 
 const (
 	SCREEN_WIDTH  = 800
@@ -14,7 +16,8 @@ const (
 )
 
 var (
-	RED   = color.RGBA{R: 255, G: 0, B: 0, A: 255}
-	GREEN = color.RGBA{R: 0, G: 255, B: 0, A: 255}
-	WHITE = color.White
+	RED   = colornames.Red
+	GREEN = colornames.Green
+	WHITE = colornames.White
+	BLACK = colornames.Black
 )

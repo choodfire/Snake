@@ -52,7 +52,6 @@ func (g *Game) Update() error {
 		return nil
 	}
 
-	// todo: fix pause text
 	if g.isPaused == true {
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 			g.isPaused = false
@@ -178,12 +177,12 @@ func (g *Game) GameOverScreen(screen *ebiten.Image) {
 	scoreText := fmt.Sprintf("Your score: %d.", g.currentScore)
 	scoreBounds := text.BoundString(face, scoreText)
 	scoreTextX, scoreTextY := cx-scoreBounds.Min.X-scoreBounds.Dx()/2, cy-scoreBounds.Min.Y-scoreBounds.Dy()/2
-	text.Draw(screen, scoreText, face, scoreTextX, scoreTextY-10, objects.WHITE)
+	text.Draw(screen, scoreText, face, scoreTextX, scoreTextY-10, objects.BLACK)
 
 	restartText := "Game over. Press \"R\" to restart."
 	restartBounds := text.BoundString(face, restartText)
 	restartTextX, restartTextY := cx-restartBounds.Min.X-restartBounds.Dx()/2, cy-restartBounds.Min.Y-restartBounds.Dy()/2
-	text.Draw(screen, restartText, face, restartTextX, restartTextY+10, objects.WHITE)
+	text.Draw(screen, restartText, face, restartTextX, restartTextY+10, objects.BLACK)
 }
 
 func (g *Game) GamePausedScreen(screen *ebiten.Image) {
@@ -194,7 +193,7 @@ func (g *Game) GamePausedScreen(screen *ebiten.Image) {
 	cy := objects.SCREEN_HEIGHT / 2
 	x, y := cx-bounds.Min.X-bounds.Dx()/2, cy-bounds.Min.Y-bounds.Dy()/2
 
-	text.Draw(screen, restartText, face, x, y, objects.WHITE)
+	text.Draw(screen, restartText, face, x, y, objects.BLACK)
 }
 
 func (g *Game) SpawnNewFood() {
