@@ -120,7 +120,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		ebitenutil.DrawRect(screen, float64(objects.RIGHT_BORDER), float64(i), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
 	}
 
-	ebitenutil.DrawRect(screen, float64(g.food.Point.X), float64(g.food.Point.Y), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.RED)
+	options := &ebiten.DrawImageOptions{}
+	options.GeoM.Translate(float64(g.food.Point.X), float64(g.food.Point.Y))
+	screen.DrawImage(g.food.Icon, options)
 
 	for _, point := range g.snake.Body {
 		ebitenutil.DrawRect(screen, float64(point.X), float64(point.Y), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.GREEN)
