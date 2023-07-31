@@ -26,7 +26,7 @@ type Game struct {
 }
 
 func NewGame() *Game {
-	img, _, err := ebitenutil.NewImageFromFile("assets/images/background.png")
+	img, _, err := ebitenutil.NewImageFromFile("assets/background.png")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -87,9 +87,9 @@ func (g *Game) Update() error {
 	if head := g.snake.Body[0]; head == g.food.Point {
 		g.snake.ConsumeFood()
 		g.SpawnNewFood()
-		g.currentScore += 1
+		g.currentScore += g.food.Score
 		if g.currentScore > g.maxScore {
-			g.maxScore += 1
+			g.maxScore += g.food.Score
 		}
 
 		g.SpeedUpSnake()
@@ -125,7 +125,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(g.food.Icon, options)
 
 	for _, point := range g.snake.Body {
-		ebitenutil.DrawRect(screen, float64(point.X), float64(point.Y), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.GREEN)
+		options := &ebiten.DrawImageOptions{}
+		options.GeoM.Translate(float64(point.X), float64(point.Y))
+		screen.DrawImage(g.snake.Icon, options)
 	}
 }
 

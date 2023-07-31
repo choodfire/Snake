@@ -1,5 +1,11 @@
 package objects
 
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"log"
+)
+
 type Direction int
 
 const (
@@ -9,10 +15,21 @@ const (
 	Down
 )
 
+var bodyIcon *ebiten.Image
+
 type Snake struct {
 	Body      []Point
 	Direction Direction
 	Speed     int
+	Icon      *ebiten.Image
+}
+
+func init() {
+	var err error
+	bodyIcon, _, err = ebitenutil.NewImageFromFile("assets/body.png")
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func NewSnake() *Snake {
@@ -23,6 +40,7 @@ func NewSnake() *Snake {
 		Body:      newBody,
 		Direction: Right,
 		Speed:     0,
+		Icon:      bodyIcon,
 	}
 }
 

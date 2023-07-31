@@ -20,19 +20,19 @@ var food4Icon *ebiten.Image
 
 func init() {
 	var err error
-	food1Icon, _, err = ebitenutil.NewImageFromFile("assets/images/food1.png")
+	food1Icon, _, err = ebitenutil.NewImageFromFile("assets/food1.png")
 	if err != nil {
 		log.Fatal(err)
 	}
-	food2Icon, _, err = ebitenutil.NewImageFromFile("assets/images/food2.png")
+	food2Icon, _, err = ebitenutil.NewImageFromFile("assets/food2.png")
 	if err != nil {
 		log.Fatal(err)
 	}
-	food3Icon, _, err = ebitenutil.NewImageFromFile("assets/images/food3.png")
+	food3Icon, _, err = ebitenutil.NewImageFromFile("assets/food3.png")
 	if err != nil {
 		log.Fatal(err)
 	}
-	food4Icon, _, err = ebitenutil.NewImageFromFile("assets/images/food4.png")
+	food4Icon, _, err = ebitenutil.NewImageFromFile("assets/food4.png")
 	if err != nil {
 		log.Fatal(err)
 	}
