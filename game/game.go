@@ -236,3 +236,11 @@ func (g *Game) DrawScoreText(screen *ebiten.Image) {
 
 	text.Draw(screen, bestScoreText, face, x, y, objects.WHITE)
 }
+
+func (g *Game) StartGame() {
+	ebiten.SetWindowSize(objects.SCREEN_WIDTH, objects.SCREEN_HEIGHT)
+	ebiten.SetWindowTitle("Snake")
+	if err := ebiten.RunGame(g); err != nil {
+		log.Fatal(err)
+	}
+}
