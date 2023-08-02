@@ -7,6 +7,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
+	"golang.org/x/image/colornames"
 	"golang.org/x/image/font/basicfont"
 	_ "image/png"
 	"log"
@@ -18,15 +19,22 @@ type Game struct {
 	snake         *objects.Snake
 	isRunning     bool
 	isPaused      bool
+	isFirstScreen bool
 	maxSnakeSpeed int
 	currentSpeed  int
 	currentScore  int
 	maxScore      int
 	background    *ebiten.Image
+	firstScreen   *ebiten.Image
 }
 
 func NewGame() *Game {
 	img, _, err := ebitenutil.NewImageFromFile("assets/background.png")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	first_screen, _, err := ebitenutil.NewImageFromFile("assets/first_screen.png")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,15 +44,24 @@ func NewGame() *Game {
 		snake:         objects.NewSnake(),
 		isRunning:     true,
 		isPaused:      false,
+		isFirstScreen: true,
 		maxSnakeSpeed: 10,
 		currentSpeed:  0,
 		currentScore:  0,
 		maxScore:      0,
 		background:    img,
+		firstScreen:   first_screen,
 	}
 }
 
 func (g *Game) Update() error {
+	if g.isFirstScreen == true {
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+			g.isFirstScreen = false
+		}
+		return nil
+	}
+
 	if g.isRunning == false {
 		if inpututil.IsKeyJustPressed(ebiten.KeyR) {
 			g.Restart()
@@ -101,6 +118,11 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(g.background, nil)
 
+	if g.isFirstScreen == true {
+		g.FirstScreen(screen)
+		return
+	}
+
 	if g.isRunning == false {
 		g.GameOverScreen(screen)
 	}
@@ -110,15 +132,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 
 	g.DrawScoreText(screen)
-
-	for i := objects.LEFT_BORDER; i < objects.RIGHT_BORDER; i++ {
-		ebitenutil.DrawRect(screen, float64(i), float64(objects.UPPER_BORDER), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
-		ebitenutil.DrawRect(screen, float64(i), float64(objects.BOTTOM_BORDER), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
-	}
-	for i := objects.UPPER_BORDER; i < objects.BOTTOM_BORDER; i++ {
-		ebitenutil.DrawRect(screen, float64(objects.LEFT_BORDER), float64(i), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
-		ebitenutil.DrawRect(screen, float64(objects.RIGHT_BORDER), float64(i), objects.SQUARE_SIZE, objects.SQUARE_SIZE, objects.WHITE)
-	}
 
 	options := &ebiten.DrawImageOptions{}
 	options.GeoM.Translate(float64(g.food.Point.X), float64(g.food.Point.Y))
@@ -181,12 +194,12 @@ func (g *Game) GameOverScreen(screen *ebiten.Image) {
 	scoreText := fmt.Sprintf("Your score: %d.", g.currentScore)
 	scoreBounds := text.BoundString(face, scoreText)
 	scoreTextX, scoreTextY := cx-scoreBounds.Min.X-scoreBounds.Dx()/2, cy-scoreBounds.Min.Y-scoreBounds.Dy()/2
-	text.Draw(screen, scoreText, face, scoreTextX, scoreTextY-10, objects.BLACK)
+	text.Draw(screen, scoreText, face, scoreTextX, scoreTextY-10, colornames.Black)
 
 	restartText := "Game over. Press \"R\" to restart."
 	restartBounds := text.BoundString(face, restartText)
 	restartTextX, restartTextY := cx-restartBounds.Min.X-restartBounds.Dx()/2, cy-restartBounds.Min.Y-restartBounds.Dy()/2
-	text.Draw(screen, restartText, face, restartTextX, restartTextY+10, objects.BLACK)
+	text.Draw(screen, restartText, face, restartTextX, restartTextY+10, colornames.Black)
 }
 
 func (g *Game) GamePausedScreen(screen *ebiten.Image) {
@@ -197,7 +210,7 @@ func (g *Game) GamePausedScreen(screen *ebiten.Image) {
 	cy := objects.SCREEN_HEIGHT / 2
 	x, y := cx-bounds.Min.X-bounds.Dx()/2, cy-bounds.Min.Y-bounds.Dy()/2
 
-	text.Draw(screen, restartText, face, x, y, objects.BLACK)
+	text.Draw(screen, restartText, face, x, y, colornames.Black)
 }
 
 func (g *Game) SpawnNewFood() {
@@ -226,7 +239,7 @@ func (g *Game) DrawScoreText(screen *ebiten.Image) {
 	cy := objects.UPPER_BORDER / 2
 	x, y := cx-bounds.Min.X-bounds.Dx()/2, cy-bounds.Min.Y-bounds.Dy()/2
 
-	text.Draw(screen, currentScoreText, face, x, y, objects.WHITE)
+	text.Draw(screen, currentScoreText, face, x, y, colornames.White)
 
 	bestScoreText := fmt.Sprintf("Best score: %d", g.maxScore)
 	bounds = text.BoundString(face, currentScoreText)
@@ -234,7 +247,7 @@ func (g *Game) DrawScoreText(screen *ebiten.Image) {
 	cy = objects.UPPER_BORDER / 2
 	x, y = cx-bounds.Min.X-bounds.Dx()/2, cy-bounds.Min.Y-bounds.Dy()/2
 
-	text.Draw(screen, bestScoreText, face, x, y, objects.WHITE)
+	text.Draw(screen, bestScoreText, face, x, y, colornames.White)
 }
 
 func (g *Game) StartGame() {
@@ -243,4 +256,8 @@ func (g *Game) StartGame() {
 	if err := ebiten.RunGame(g); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func (g *Game) FirstScreen(screen *ebiten.Image) {
+	screen.DrawImage(g.firstScreen, nil)
 }
