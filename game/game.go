@@ -15,17 +15,17 @@ import (
 )
 
 type Game struct {
-	food          *objects.Food
-	snake         *objects.Snake
-	isRunning     bool
-	isPaused      bool
-	isFirstScreen bool
-	maxSnakeSpeed int
-	currentSpeed  int
-	currentScore  int
-	maxScore      int
-	background    *ebiten.Image
-	firstScreen   *ebiten.Image
+	food            *objects.Food
+	snake           *objects.Snake
+	isRunning       bool
+	isPaused        bool
+	isFirstScreen   bool
+	maxSnakeSpeed   int
+	currentSpeed    int
+	currentScore    int
+	maxScore        int
+	background      *ebiten.Image
+	educationScreen *ebiten.Image
 }
 
 func NewGame() *Game {
@@ -34,23 +34,23 @@ func NewGame() *Game {
 		log.Fatal(err)
 	}
 
-	first_screen, _, err := ebitenutil.NewImageFromFile("assets/first_screen.png")
+	educationScreen, _, err := ebitenutil.NewImageFromFile("assets/education.png")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	return &Game{
-		food:          objects.NewFood(),
-		snake:         objects.NewSnake(),
-		isRunning:     true,
-		isPaused:      false,
-		isFirstScreen: true,
-		maxSnakeSpeed: 10,
-		currentSpeed:  0,
-		currentScore:  0,
-		maxScore:      0,
-		background:    img,
-		firstScreen:   first_screen,
+		food:            objects.NewFood(),
+		snake:           objects.NewSnake(),
+		isRunning:       true,
+		isPaused:        false,
+		isFirstScreen:   true,
+		maxSnakeSpeed:   10,
+		currentSpeed:    0,
+		currentScore:    0,
+		maxScore:        0,
+		background:      img,
+		educationScreen: educationScreen,
 	}
 }
 
@@ -259,5 +259,5 @@ func (g *Game) StartGame() {
 }
 
 func (g *Game) FirstScreen(screen *ebiten.Image) {
-	screen.DrawImage(g.firstScreen, nil)
+	screen.DrawImage(g.educationScreen, nil)
 }
