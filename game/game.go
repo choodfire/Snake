@@ -15,17 +15,17 @@ import (
 )
 
 type Game struct {
-	food            *objects.Food
-	snake           *objects.Snake
-	isRunning       bool
-	isPaused        bool
-	isFirstScreen   bool
-	maxSnakeSpeed   int
-	currentSpeed    int
-	currentScore    int
-	maxScore        int
-	background      *ebiten.Image
-	educationScreen *ebiten.Image
+	food              *objects.Food
+	snake             *objects.Snake
+	isRunning         bool
+	isPaused          bool
+	isEducationScreen bool
+	maxSnakeSpeed     int
+	currentSpeed      int
+	currentScore      int
+	maxScore          int
+	background        *ebiten.Image
+	educationScreen   *ebiten.Image
 }
 
 func NewGame() *Game {
@@ -40,24 +40,24 @@ func NewGame() *Game {
 	}
 
 	return &Game{
-		food:            objects.NewFood(),
-		snake:           objects.NewSnake(),
-		isRunning:       true,
-		isPaused:        false,
-		isFirstScreen:   true,
-		maxSnakeSpeed:   10,
-		currentSpeed:    0,
-		currentScore:    0,
-		maxScore:        0,
-		background:      img,
-		educationScreen: educationScreen,
+		food:              objects.NewFood(),
+		snake:             objects.NewSnake(),
+		isRunning:         true,
+		isPaused:          false,
+		isEducationScreen: true,
+		maxSnakeSpeed:     10,
+		currentSpeed:      0,
+		currentScore:      0,
+		maxScore:          0,
+		background:        img,
+		educationScreen:   educationScreen,
 	}
 }
 
 func (g *Game) Update() error {
-	if g.isFirstScreen == true {
+	if g.isEducationScreen == true {
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-			g.isFirstScreen = false
+			g.isEducationScreen = false
 		}
 		return nil
 	}
@@ -118,7 +118,7 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(g.background, nil)
 
-	if g.isFirstScreen == true {
+	if g.isEducationScreen == true {
 		g.FirstScreen(screen)
 		return
 	}
