@@ -151,19 +151,23 @@ func (g *Game) Layout(outsideWidth int, outsideHeight int) (screenWidth int, scr
 func (g *Game) CheckGameOver() error {
 	head := g.snake.Body[0]
 
-	if head.X > objects.RIGHT_BORDER-objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Right {
+	if (head.X > objects.RIGHT_BORDER-objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Right) ||
+		head.X > objects.RIGHT_BORDER-objects.SQUARE_SIZE {
 		return errors.New("snake hit right border")
 	}
 
-	if head.X < objects.LEFT_BORDER+objects.SQUARE_SIZE+1 && g.snake.Direction == objects.Left {
+	if (head.X < objects.LEFT_BORDER+objects.SQUARE_SIZE+1 && g.snake.Direction == objects.Left) ||
+		head.X < objects.LEFT_BORDER+objects.SQUARE_SIZE {
 		return errors.New("snake hit left border")
 	}
 
-	if head.Y > objects.BOTTOM_BORDER-objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Down {
+	if (head.Y > objects.BOTTOM_BORDER-objects.SQUARE_SIZE-1 && g.snake.Direction == objects.Down) ||
+		head.X > objects.BOTTOM_BORDER-objects.SQUARE_SIZE {
 		return errors.New("snake hit bottom border")
 	}
 
-	if head.Y < objects.UPPER_BORDER+objects.SQUARE_SIZE+1 && g.snake.Direction == objects.Up {
+	if (head.Y < objects.UPPER_BORDER+objects.SQUARE_SIZE+1 && g.snake.Direction == objects.Up) ||
+		head.X < objects.UPPER_BORDER+objects.SQUARE_SIZE {
 		return errors.New("snake hit upper border")
 	}
 
@@ -239,7 +243,7 @@ func (g *Game) DrawScoreText(screen *ebiten.Image) {
 	cy := objects.UPPER_BORDER / 2
 	x, y := cx-bounds.Min.X-bounds.Dx()/2, cy-bounds.Min.Y-bounds.Dy()/2
 
-	text.Draw(screen, currentScoreText, face, x, y, colornames.White)
+	text.Draw(screen, currentScoreText, face, x, y, colornames.Black)
 
 	bestScoreText := fmt.Sprintf("Best score: %d", g.maxScore)
 	bounds = text.BoundString(face, currentScoreText)
@@ -247,7 +251,7 @@ func (g *Game) DrawScoreText(screen *ebiten.Image) {
 	cy = objects.UPPER_BORDER / 2
 	x, y = cx-bounds.Min.X-bounds.Dx()/2, cy-bounds.Min.Y-bounds.Dy()/2
 
-	text.Draw(screen, bestScoreText, face, x, y, colornames.White)
+	text.Draw(screen, bestScoreText, face, x, y, colornames.Black)
 }
 
 func (g *Game) StartGame() {
